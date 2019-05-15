@@ -4,7 +4,14 @@ const PORT = 3012;
 
 app.get('/', (req, res)=> {
     res.json({
-        message : "Test successful."
+        message : "Test successful.",
+        type : "GET"
+    });
+});
+app.post('/', (req, res)=> {
+    res.json({
+        message : "Test successful",
+        type : "POST"
     });
 });
 
