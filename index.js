@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 const PORT = 3012;
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 
 app.get('/', (req, res)=> {
     res.json({
