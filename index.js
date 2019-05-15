@@ -10,6 +10,7 @@ app.get('/', (req, res)=> {
 });
 app.post('/', (req, res)=> {
     console.log(req);
+    res.setHeader("cows","moo");
     res.json({
         message : "Test successful",
         type : "POST"
