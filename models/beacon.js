@@ -11,13 +11,9 @@ class Beacon {
         this.artistTrackURL = artist_track_url;
     }
 
-    // static addFromSearch(user){
-    //     return db.one(`insertnp into artists 
-    //     (spotify_id, name, picture)
-    //     values
-    //     ($1,$2,$3)
-    //     returning true`,[user.id, user.displayName, user.photos[0]]);
-    // }
+    static getCoordinates(){
+        return db.one(`select * from flags where id = 1`,[]);
+    }
 
 
     static add1(userID, spotifyResult, artist_track_url){
