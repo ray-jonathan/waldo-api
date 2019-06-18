@@ -10,8 +10,8 @@ app.get('/', (req, res)=> {
         message : "Test successful.",
         type : "GET",
         coordinates : {
-            latitude : 33.99322576251758,
-            longitude: -84.75294486198766, 
+            lat : 33.99322576251758,
+            lng: -84.75294486198766, 
         }
     });
 });
