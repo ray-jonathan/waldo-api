@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
 const PORT = 3012;
-const {getBeacon} = require('./controllers/locationdata');
+const {
+    getBeacon, 
+    setBeacon,
+    } = require('./controllers/locationdata');
 
 app.use(express.json()); // Required for passing JSON to `req.body`
 app.use(express.urlencoded({extended: true}));
@@ -14,12 +17,15 @@ app.get('/', async (req, res)=> {
         coordinates : coords
     });
 });
-app.post('/', (req, res)=> {
+app.post('/', async (req, res)=> {
     console.log(req.body);
-    res.setHeader("cows","moo");
+    // res.setHeader("cows","moo");
+    const {latitude, longitude, } = req.body;
+    const coords = await setBeacon(latitude, longitude);
     res.json({
         message : "Test successful",
-        type : "POST"
+        type : "POST",
+        coordinates : coords
     });
 });
 

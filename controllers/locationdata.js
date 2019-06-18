@@ -11,6 +11,17 @@ async function getBeacon(){
   return coordinates;
 }
 
+async function setBeacon(){
+  const data = await Beacon.setCoordinates();
+  console.log("data from setBeacon:", data);
+  const coordinates = {
+    lat : data.latitude,
+    lng : data.longitude,
+  };
+  return coordinates;
+}
+
 module.exports = {
   getBeacon,
+  setBeacon,
 };
