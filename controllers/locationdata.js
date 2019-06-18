@@ -4,7 +4,11 @@ const Beacon = require('../models/beacon');
 
 async function getBeacon(){
   const data = await Beacon.getCoordinates();
-  console.log(data);
+  const coordinates = {
+    lat : data.latitude,
+    lng : data.longitude,
+  };
+  return coordinates;
 }
 
 module.exports = {

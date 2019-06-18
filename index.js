@@ -6,15 +6,12 @@ const {getBeacon} = require('./controllers/locationdata');
 
 app.use(bodyParser.json());
 
-app.get('/', (req, res)=> {
-    getBeacon();
+app.get('/', async (req, res)=> {
+    const coords = await getBeacon();
     res.json({
         message : "Test successful.",
         type : "GET",
-        coordinates : {
-            lat : 33.99322576251758,
-            lng: -84.75294486198766, 
-        }
+        coordinates : coords
     });
 });
 app.post('/', (req, res)=> {
