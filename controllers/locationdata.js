@@ -11,8 +11,8 @@ async function getBeacon(){
   return coordinates;
 }
 
-async function setBeacon(){
-  const data = await Beacon.setCoordinates();
+async function setBeacon(lat, lng){
+  const data = await Beacon.setCoordinates(lat, lng);
   console.log("data from setBeacon:", data);
   const coordinates = {
     lat : data.latitude,
