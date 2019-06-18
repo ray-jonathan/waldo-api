@@ -2,12 +2,12 @@ const express = require('express');
 const app = express();
 const PORT = 3012;
 const bodyParser = require('body-parser');
-const {getCoordinates} = require('./controllers/locationdata');
+const {getBeacon} = require('./controllers/locationdata');
 
 app.use(bodyParser.json());
 
 app.get('/', (req, res)=> {
-    getCoordinates();
+    getBeacon();
     res.json({
         message : "Test successful.",
         type : "GET",
