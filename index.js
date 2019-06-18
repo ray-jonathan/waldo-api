@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 const PORT = 3012;
-const bodyParser = require('body-parser');
 const {getBeacon} = require('./controllers/locationdata');
 
-app.use(bodyParser.json());
+app.use(express.json()); // Required for passing JSON to `req.body`
+app.use(express.urlencoded({extended: true}));
 
 app.get('/', async (req, res)=> {
     const coords = await getBeacon();
