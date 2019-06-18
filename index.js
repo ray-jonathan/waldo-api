@@ -8,7 +8,11 @@ app.use(bodyParser.json());
 app.get('/', (req, res)=> {
     res.json({
         message : "Test successful.",
-        type : "GET"
+        type : "GET",
+        coordinates : {
+            latitude : 33.99322576251758,
+            longitude: -84.75294486198766, 
+        }
     });
 });
 app.post('/', (req, res)=> {
