@@ -15,7 +15,7 @@ class Beacon {
         return db.one(`select * from flags where id = 1`,[]);
     }
     static setCoordinates(lat, lng){
-        return db.one(`update flags set latitude=$1, longitude=$2 from flags where id = 1 returning *`,[lat, lng]);
+        return db.one(`update flags set latitude=$1, longitude=$2 where id = 1 returning *`,[lat, lng]);
     }
 
     static add1(userID, spotifyResult, artist_track_url){
