@@ -1,0 +1,3 @@
+INSERT into flags(latitude, longitude)
+VALUES 
+(33.783553018202355, -84.37164244261726);

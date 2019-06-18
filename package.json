@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:create": "createdb waldo-app",
+    "db:init": "psql -f schema.sql waldo-app && psql -f seed.sql waldo-app",
+    "db:destroy": "dropdb waldo-app",
+    "db:reset": "npm run db:destroy; npm run db:create && npm run db:init"
   },
   "keywords": [],
   "author": "",
