@@ -1,3 +1,4 @@
+const http = require('http');
 const express = require('express');
 const app = express();
 const PORT = 3012;
@@ -7,7 +8,11 @@ const {
     } = require('./controllers/locationdata');
 
 const WebSocket = require('ws')
-const wss = new WebSocket.Server({ port: 8080 });
+const server = http.createServer(app); 
+const wss = new WebSocket.Server({
+    path: '/ws',
+    server // piggyback the websocket server onto our http server
+});
 wss.on('connection', ws => {
     ws.on('message', message => {
     console.log(`Received message => ${message}`);
@@ -38,6 +43,7 @@ app.post('/', async (req, res)=> {
     });
 });
 
-app.listen(PORT, ()=> {
+// app.listen(PORT, ()=> {
+server.listen(PORT, ()=> {
     console.log(`Running on port ${PORT}.`);
 });
