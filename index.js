@@ -14,6 +14,8 @@ const wss = new WebSocket.Server({
     server // piggyback the websocket server onto our http server
 });
 wss.on('connection', ws => {
+    console.log(" ");
+    console.log("connected");
     ws.on('message', message => {
     console.log(`Received message => ${message}`);
     });
