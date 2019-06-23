@@ -23,11 +23,13 @@ wss.on('connection', async (ws) => {
     // ws.send('ho!');
 
     const coords = await getBeacon();
-    ws.send({
-        message : "Test successful.",
-        type : "GET",
-        coordinates : coords
-    });
+    ws.send(JSON.stringify(
+        {
+            message : "Test successful.",
+            type : "GET",
+            coordinates : coords
+        }
+    ));
 
 
 
