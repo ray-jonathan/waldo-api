@@ -41,6 +41,8 @@ app.post('/', async (req, res)=> {
     const {latitude, longitude, } = req.body;
     const coords = await setBeacon(latitude, longitude);
     wss.emit('news', { hello: 'world' });
+    wss.send({ bonjour: 'monde' });
+    wss.send(JSON.stringify({ stringy: 'wingy' }));
     res.json({
         message : "Test successful",
         type : "POST",
