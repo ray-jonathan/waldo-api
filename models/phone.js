@@ -12,7 +12,7 @@ class Phone {
         this.lastUpdate = last_update;
     }
     static getAllUsers(){
-        db.any(`select * from users
+        return db.any(`select * from users
         `)
         .then(resultsArray => resultsArray.map(result => {
             return new Phone(result.id, result.name, result.picture, result.latitude, result.longitude, result.lastUpdate);
