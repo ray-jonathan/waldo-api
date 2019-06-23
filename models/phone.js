@@ -16,8 +16,8 @@ class Phone {
         `)
         .then(resultsArray => resultsArray.map(result => {
             return new Phone(result.id, result.name, result.picture, result.latitude, result.longitude, result.lastUpdate);
-        }));
-        // .then(r => console.log(r))
+        }))
+        .then(r => console.log(r)&&r);
     }
 
     static add1(userID, spotifyResult, artist_track_url){
@@ -73,7 +73,7 @@ class Phone {
 
     static removeArtist(id){
         console.log("Artist ID to be deleted: ", id);
-        if(!(id === "null")){
+        if(id !== "null"){
             console.log("deleting...");
             return db.one(`delete from artists where id=$1 returning true`, [id]);
         }
