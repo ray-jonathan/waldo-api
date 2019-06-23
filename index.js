@@ -40,9 +40,7 @@ app.post('/', async (req, res)=> {
     // res.setHeader("cows","moo");
     const {latitude, longitude, } = req.body;
     const coords = await setBeacon(latitude, longitude);
-    wss.emit('news', { hello: 'world' });
-    wss.send({ bonjour: 'monde' });
-    wss.send(JSON.stringify({ stringy: 'wingy' }));
+
     res.json({
         message : "Test successful",
         type : "POST",
