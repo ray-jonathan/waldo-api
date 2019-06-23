@@ -30,7 +30,8 @@ wss.on('connection', async (ws) => {
         {
             message : "Test successful.",
             type : "GET",
-            coordinates : coords
+            coordinates : coords,
+            users
         }
     ));
 

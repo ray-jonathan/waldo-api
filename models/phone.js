@@ -16,8 +16,8 @@ class Phone {
         `)
         .then(resultsArray => resultsArray.map(result => {
             return new Phone(result.id, result.name, result.picture, result.latitude, result.longitude, result.lastUpdate);
-        }))
-        .then(r => console.log(r))
+        }));
+        // .then(r => console.log(r))
     }
 
     static add1(userID, spotifyResult, artist_track_url){
