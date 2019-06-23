@@ -19,7 +19,9 @@ wss.on('connection', ws => {
     ws.on('message', message => {
     console.log(`Received message => ${message}`);
     });
-    ws.send('ho!');
+    setInterval(()=> {
+        ws.send('ho!');
+    }, 2000);
 });
 
 app.use(express.json()); // Required for passing JSON to `req.body`
