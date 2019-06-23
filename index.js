@@ -19,9 +19,9 @@ wss.on('connection', ws => {
     ws.on('message', message => {
     console.log(`Received message => ${message}`);
     });
-    setInterval(()=> {
-        ws.send('ho!');
-    }, 2000);
+
+    ws.send('ho!');
+
 });
 
 app.use(express.json()); // Required for passing JSON to `req.body`
@@ -40,6 +40,7 @@ app.post('/', async (req, res)=> {
     // res.setHeader("cows","moo");
     const {latitude, longitude, } = req.body;
     const coords = await setBeacon(latitude, longitude);
+    wss.emit('news', { hello: 'world' });
     res.json({
         message : "Test successful",
         type : "POST",
