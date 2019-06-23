@@ -26,6 +26,7 @@ wss.on('connection', async (ws) => {
 
     const coords = await getBeacon();
     const users = await Phone.getAllUsers();
+    console.log("users", users);
     ws.send(JSON.stringify(
         {
             message : "Test successful.",
