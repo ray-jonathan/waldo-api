@@ -12,7 +12,7 @@ class Phone {
         this.lastUpdate = last_update;
     }
     static getAllUsers(){
-        db.any(`select * from table users
+        db.any(`select * from users
         `)
         .then(r => console.log(r))
     }
