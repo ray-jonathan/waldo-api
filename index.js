@@ -13,14 +13,23 @@ const wss = new WebSocket.Server({
     path: '/ws',
     server // piggyback the websocket server onto our http server
 });
-wss.on('connection', ws => {
+wss.on('connection', async (ws) => {
     console.log(" ");
     console.log("connected");
     ws.on('message', message => {
     console.log(`Received message => ${message}`);
     });
 
-    ws.send('ho!');
+    // ws.send('ho!');
+
+    const coords = await getBeacon();
+    ws.send({
+        message : "Test successful.",
+        type : "GET",
+        coordinates : coords
+    });
+
+
 
 });
 
