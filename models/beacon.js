@@ -71,7 +71,7 @@ class Beacon {
 
     static removeArtist(id){
         console.log("Artist ID to be deleted: ", id);
-        if(!(id === "null")){
+        if(id !== "null"){
             console.log("deleting...");
             return db.one(`delete from artists where id=$1 returning true`, [id]);
         }

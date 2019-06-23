@@ -7,7 +7,7 @@ const {
     setBeacon,
     } = require('./controllers/locationdata');
 
-const WebSocket = require('ws')
+const WebSocket = require('ws');
 const server = http.createServer(app); 
 const wss = new WebSocket.Server({
     path: '/ws',
