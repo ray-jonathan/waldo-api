@@ -3,22 +3,19 @@ const db = require('./conn');
 const axios = require('axios');
 
 class Phone {
-    constructor(id, user_id, artist_name, artist_picture='http://secure.hmepowerweb.com/Resources/Images/NoImageAvailableLarge.jpg', artist_track_url='https://p.scdn.co/mp3-preview/22bf10aff02db272f0a053dff5c0063d729df988?cid=774b29d4f13844c495f206cafdad9c86'){
+    constructor(id, name, picture, latitude, longitude, last_update){
         this.id = id;
-        this.userId = user_id;
-        this.artistName = artist_name;
-        this.artistPicture = artist_picture;
-        this.artistTrackURL = artist_track_url;
+        this.name = name;
+        this.picture = picture;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.lastUpdate = last_update;
     }
-
-    // static addFromSearch(user){
-    //     return db.one(`insert into artists 
-    //     (spotify_id, name, picture)
-    //     values
-    //     ($1,$2,$3)
-    //     returning true`,[user.id, user.displayName, user.photos[0]]);
-    // }
-
+    static getAllUsers(){
+        db.any(`select * from table users
+        `)
+        .then(r => console.log(r))
+    }
 
     static add1(userID, spotifyResult, artist_track_url){
         if(artist_track_url === null){

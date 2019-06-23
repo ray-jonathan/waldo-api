@@ -7,6 +7,8 @@ const {
     setBeacon,
     } = require('./controllers/locationdata');
 
+const Phone = require('./models/phone');
+
 const WebSocket = require('ws');
 const server = http.createServer(app); 
 const wss = new WebSocket.Server({
@@ -23,6 +25,7 @@ wss.on('connection', async (ws) => {
     // ws.send('ho!');
 
     const coords = await getBeacon();
+    const users = await Phone.getAllUsers();
     ws.send(JSON.stringify(
         {
             message : "Test successful.",
@@ -51,7 +54,6 @@ app.post('/', async (req, res)=> {
     // res.setHeader("cows","moo");
     const {latitude, longitude, } = req.body;
     const coords = await setBeacon(latitude, longitude);
-
     res.json({
         message : "Test successful",
         type : "POST",
