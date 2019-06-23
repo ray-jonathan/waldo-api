@@ -14,6 +14,9 @@ class Phone {
     static getAllUsers(){
         db.any(`select * from users
         `)
+        .then(resultsArray => resultsArray.forEach(result => {
+            return new Phone(result.id, result.name, result.picture, result.latitude, result.longitude, result.lastUpdate);
+        }))
         .then(r => console.log(r))
     }
 
