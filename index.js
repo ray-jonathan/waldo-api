@@ -19,6 +19,7 @@ wss.on('connection', async (ws) => {
         // BONUS: send all coords to all users except the one who sent this message
         switch(message.type){
             case("flag"):
+                console.log("WS: Flag CASE");
                 await Beacon.setCoordinates(message.flag.latitude, message.flag.longitude)
                 ws.send(JSON.stringify({
                     type: "flag",
@@ -31,8 +32,10 @@ wss.on('connection', async (ws) => {
                 }));
                 break;
             case("user"):
+                console.log("WS: USER CASE");
                 const userFill = await Phone.setUserById(1, message.user.latitude, message.user.longitude)
                 console.log("userFill: ");
+                console.log(userFill);
                 // we'll want send the userFill object back so that the users have the name and picture of the player
                 ws.send(JSON.stringify({
                     type: "user",
