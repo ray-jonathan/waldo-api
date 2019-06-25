@@ -21,7 +21,7 @@ wss.on('connection', async (ws) => {
         switch(messageJSON.type){
             case("flag"):
                 console.log("WS: Flag CASE");
-                await Beacon.setCoordinates(messageJSON.flag.latitude, messageJSON.flag.longitude)
+                await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
                 ws.send(JSON.stringify({
                     type: "flag",
                     flag: {
@@ -101,8 +101,9 @@ app.post('/', async (req, res)=> {
     res.json({
         message : "Test successful",
         type : "POST",
-        coordinates : coords
-    });
+        latitude,
+        longitude,
+});
 });
 
 // app.listen(PORT, ()=> {
