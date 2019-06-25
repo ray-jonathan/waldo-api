@@ -31,6 +31,7 @@ wss.on('connection', async (ws) => {
                         }
                     }
                 }));
+                console.log("flag info sent to phones");
                 break;
             case("user"):
                 console.log("WS: USER CASE");
