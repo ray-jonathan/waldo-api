@@ -34,7 +34,8 @@ wss.on('connection', async (ws) => {
                 break;
             case("user"):
                 console.log("WS: USER CASE");
-                const userFill = await Phone.setUserById(1, messageJSON.user.latitude, messageJSON.user.longitude)
+                console.log(messageJSON.user);
+                const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude)
                 console.log("userFill: ");
                 console.log(userFill);
                 // we'll want send the userFill object back so that the users have the name and picture of the player
