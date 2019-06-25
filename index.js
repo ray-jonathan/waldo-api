@@ -59,7 +59,7 @@ app.get('/', async (req, res)=> {
     const flag = await Beacon.getBeaconById(1);
     const usersArray = await Phone.getAllUsers();
     const users = {};
-    usersArray.array.forEach(user => {
+    usersArray.forEach(user => {
         users[user.id] = {
             name: user.name,
             pic: user.picture,
