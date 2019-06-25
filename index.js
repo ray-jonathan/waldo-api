@@ -2,13 +2,8 @@ const http = require('http');
 const express = require('express');
 const app = express();
 const PORT = 3012;
-const {
-    getBeacon, 
-    setBeacon,
-    } = require('./controllers/locationdata');
-
 const Phone = require('./models/phone');
-
+const Beacon = require('./models/beacon');
 const WebSocket = require('ws');
 const server = http.createServer(app); 
 const wss = new WebSocket.Server({
@@ -18,45 +13,88 @@ const wss = new WebSocket.Server({
 wss.on('connection', async (ws) => {
     console.log(" ");
     console.log("connected");
-    ws.on('message', message => {
-    console.log(`Received message => ${message}`);
-    });
-
-    // ws.send('ho!');
-
-    const coords = await getBeacon();
-    const users = await Phone.getAllUsers();
-    console.log("users ", users);
-    console.log(typeof users);
-    ws.send(JSON.stringify(
-        {
-            message : "Test successful.",
-            type : "GET",
-            coordinates : coords,
-            users : users,
+    ws.on('message', async (message) => {
+        console.log("message is...");
+        console.log(message);
+        // BONUS: send all coords to all users except the one who sent this message
+        switch(message.type){
+            case("flag"):
+                await Beacon.setCoordinates(message.flag.latitude, message.flag.longitude)
+                ws.send(JSON.stringify({
+                    type: "flag",
+                    flag: {
+                        [message.flag.id] : {
+                            latitude: message.flag.latitude,
+                            longitude: message.flag.longitude,
+                        }
+                    }
+                }));
+                break;
+            case("user"):
+                const userFill = await Phone.setUserById(1, message.user.latitude, message.user.longitude)
+                console.log("userFill: ");
+                // we'll want send the userFill object back so that the users have the name and picture of the player
+                ws.send(JSON.stringify({
+                    type: "user",
+                    user: {
+                        [message.user.id] : {
+                            // name: message.user.name,
+                            // pic: message.user.picture,                
+                            latitude: message.user.latitude,
+                            longitude: message.user.longitude,
+                        }
+                    }
+                }));
+                break;
+            default: 
+                break;
         }
-    ));
-
-
-
+    });
 });
 
 app.use(express.json()); // Required for passing JSON to `req.body`
 app.use(express.urlencoded({extended: true}));
 
 app.get('/', async (req, res)=> {
-    const coords = await getBeacon();
+    const flag = await Beacon.getBeaconById(1);
+    const usersArray = await Phone.getAllUsers();
+    const users = {};
+    usersArray.array.forEach(user => {
+        users[user.id] = {
+            name: user.name,
+            pic: user.picture,
+            latitude: user.latitude,
+            longitude: user.longitude,
+        };
+    });
     res.json({
-        message : "Test successful.",
-        type : "GET",
-        coordinates : coords
+        flag: {
+            [flag.id]: {
+                latitude: flag.latitude,
+                longitude: flag.longitude,
+            }
+        },
+        users, //sending back an Array of userObjects
     });
 });
+
+
 app.post('/', async (req, res)=> {
     console.log(req.body);
-    // res.setHeader("cows","moo");
-    const {latitude, longitude, } = req.body;
-    const coords = await setBeacon(latitude, longitude);
+    const {latitude, longitude, id, } = req.body;
+    const url = 'ws://waldo.jonathan-ray.com/ws';
+    const connection = new WebSocket(url);
+    connection.onopen = () => {
+        connection.send(JSON.stringify({
+            type: "flag",
+            flag: {
+                id,
+                latitude,
+                longitude,
+            }
+        }));
+        connection.terminate();
+    };
     res.json({
         message : "Test successful",
         type : "POST",

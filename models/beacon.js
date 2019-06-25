@@ -11,11 +11,11 @@ class Beacon {
         this.artistTrackURL = artist_track_url;
     }
 
-    static getCoordinates(){
-        return db.one(`select * from flags where id = 1`,[]);
+    static getBeaconById(id){
+        return db.one(`select * from flags where id=$1`,[id]);
     }
-    static setCoordinates(lat, lng){
-        return db.one(`update flags set latitude=$1, longitude=$2 where id = 1 returning *`,[lat, lng]);
+    static setCoordinatesById(id, lat, lng){
+        return db.one(`update flags set latitude=$2, longitude=$3 where id=$1 returning *`,[id, lat, lng]);
     }
 
     static add1(userID, spotifyResult, artist_track_url){
