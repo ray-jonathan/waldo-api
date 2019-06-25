@@ -13,46 +13,46 @@ const wss = new WebSocket.Server({
 wss.on('connection', async (ws) => {
     console.log(" ");
     console.log("connected");
-    ws.on('message', async (message) => {
-        console.log("incoming socket say...");
-        const messageJSON = JSON.parse(message);
-        console.log(messageJSON);
-        // BONUS: send all coords to all users except the one who sent this message
-        switch(messageJSON.type){
-            case("flag"):
-                console.log("WS: Flag CASE");
-                await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
-                ws.send(JSON.stringify({
-                    type: "flag",
-                    flag: {
-                        [messageJSON.flag.id] : {
-                            latitude: messageJSON.flag.latitude,
-                            longitude: messageJSON.flag.longitude,
-                        }
+});
+ws.on('message', async (message) => {
+    console.log("incoming socket say...");
+    const messageJSON = JSON.parse(message);
+    console.log(messageJSON);
+    // BONUS: send all coords to all users except the one who sent this message
+    switch(messageJSON.type){
+        case("flag"):
+            console.log("WS: Flag CASE");
+            await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
+            ws.send(JSON.stringify({
+                type: "flag",
+                flag: {
+                    [messageJSON.flag.id] : {
+                        latitude: messageJSON.flag.latitude,
+                        longitude: messageJSON.flag.longitude,
                     }
-                }));
-                console.log("flag info sent to phones");
-                break;
-            case("user"):
-                console.log("WS: USER CASE");
-                const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude)
-                // we'll want send the userFill object back so that the users have the name and picture of the player
-                ws.send(JSON.stringify({
-                    type: "user",
-                    user: {
-                        [userFill.id] : {
-                            name: userFill.name,
-                            picture: userFill.picture,                
-                            latitude: userFill.latitude,
-                            longitude: userFill.longitude,
-                        }
+                }
+            }));
+            console.log("flag info sent to phones");
+            break;
+        case("user"):
+            console.log("WS: USER CASE");
+            const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude)
+            // we'll want send the userFill object back so that the users have the name and picture of the player
+            ws.send(JSON.stringify({
+                type: "user",
+                user: {
+                    [userFill.id] : {
+                        name: userFill.name,
+                        picture: userFill.picture,                
+                        latitude: userFill.latitude,
+                        longitude: userFill.longitude,
                     }
-                }));
-                break;
-            default: 
-                break;
-        }
-    });
+                }
+            }));
+            break;
+        default: 
+            break;
+    }
 });
 
 app.use(express.json()); // Required for passing JSON to `req.body`
