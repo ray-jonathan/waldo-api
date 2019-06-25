@@ -15,36 +15,38 @@ wss.on('connection', async (ws) => {
     console.log("connected");
     ws.on('message', async (message) => {
         console.log("message is...");
-        console.log(message);
+        console.log(typeof message);
+        const messageJSON = JSON.parse(message);
+        console.log(typeof messageJSON);
         // BONUS: send all coords to all users except the one who sent this message
-        switch(message.type){
+        switch(messageJSON.type){
             case("flag"):
                 console.log("WS: Flag CASE");
-                await Beacon.setCoordinates(message.flag.latitude, message.flag.longitude)
+                await Beacon.setCoordinates(messageJSON.flag.latitude, messageJSON.flag.longitude)
                 ws.send(JSON.stringify({
                     type: "flag",
                     flag: {
-                        [message.flag.id] : {
-                            latitude: message.flag.latitude,
-                            longitude: message.flag.longitude,
+                        [messageJSON.flag.id] : {
+                            latitude: messageJSON.flag.latitude,
+                            longitude: messageJSON.flag.longitude,
                         }
                     }
                 }));
                 break;
             case("user"):
                 console.log("WS: USER CASE");
-                const userFill = await Phone.setUserById(1, message.user.latitude, message.user.longitude)
+                const userFill = await Phone.setUserById(1, messageJSON.user.latitude, messageJSON.user.longitude)
                 console.log("userFill: ");
                 console.log(userFill);
                 // we'll want send the userFill object back so that the users have the name and picture of the player
                 ws.send(JSON.stringify({
                     type: "user",
                     user: {
-                        [message.user.id] : {
-                            // name: message.user.name,
-                            // pic: message.user.picture,                
-                            latitude: message.user.latitude,
-                            longitude: message.user.longitude,
+                        [messageJSON.user.id] : {
+                            // name: messageJSON.user.name,
+                            // pic: messageJSON.user.picture,                
+                            latitude: messageJSON.user.latitude,
+                            longitude: messageJSON.user.longitude,
                         }
                     }
                 }));
