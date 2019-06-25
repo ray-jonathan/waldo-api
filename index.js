@@ -15,9 +15,8 @@ wss.on('connection', async (ws) => {
     console.log("connected");
     ws.on('message', async (message) => {
         console.log("message is...");
-        console.log(typeof message);
         const messageJSON = JSON.parse(message);
-        console.log(typeof messageJSON);
+        console.log(messageJSON);
         // BONUS: send all coords to all users except the one who sent this message
         switch(messageJSON.type){
             case("flag"):
