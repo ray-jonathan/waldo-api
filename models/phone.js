@@ -18,7 +18,7 @@ class Phone {
             return new Phone(result.id, result.name, result.picture, result.latitude, result.longitude, result.lastUpdate);
         }))
         .then(r => {
-            console.log("results: ", r);
+            // console.log("results: ", r);
             return r;
         });
     }

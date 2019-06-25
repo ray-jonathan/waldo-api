@@ -14,7 +14,7 @@ wss.on('connection', async (ws) => {
     console.log(" ");
     console.log("connected");
     ws.on('message', async (message) => {
-        console.log("message is...");
+        console.log("incoming socket say...");
         const messageJSON = JSON.parse(message);
         console.log(messageJSON);
         // BONUS: send all coords to all users except the one who sent this message
@@ -34,19 +34,16 @@ wss.on('connection', async (ws) => {
                 break;
             case("user"):
                 console.log("WS: USER CASE");
-                console.log(messageJSON.user);
                 const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude)
-                console.log("userFill: ");
-                console.log(userFill);
                 // we'll want send the userFill object back so that the users have the name and picture of the player
                 ws.send(JSON.stringify({
                     type: "user",
                     user: {
-                        [messageJSON.user.id] : {
-                            // name: messageJSON.user.name,
-                            // pic: messageJSON.user.picture,                
-                            latitude: messageJSON.user.latitude,
-                            longitude: messageJSON.user.longitude,
+                        [userFill.id] : {
+                            name: userFill.name,
+                            picture: userFill.picture,                
+                            latitude: userFill.latitude,
+                            longitude: userFill.longitude,
                         }
                     }
                 }));
@@ -61,6 +58,7 @@ app.use(express.json()); // Required for passing JSON to `req.body`
 app.use(express.urlencoded({extended: true}));
 
 app.get('/', async (req, res)=> {
+    console.log("'GET' request");
     const flag = await Beacon.getBeaconById(1);
     const usersArray = await Phone.getAllUsers();
     const users = {};
@@ -85,7 +83,7 @@ app.get('/', async (req, res)=> {
 
 
 app.post('/', async (req, res)=> {
-    console.log(req.body);
+    console.log(`'POST' from flag id: ${req.body.id}`);
     const {latitude, longitude, id, } = req.body;
     const url = 'ws://waldo.jonathan-ray.com/ws';
     const connection = new WebSocket(url);
