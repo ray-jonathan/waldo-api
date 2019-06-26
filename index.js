@@ -21,7 +21,9 @@ wss.on('connection', async (ws) => {
         switch(messageJSON.type){
             case("flag"):
                 console.log("WS: Flag CASE");
-                await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
+                const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
+                console.log("phoneFill: ");
+                console.log(phoneFill);
                 ws.send(JSON.stringify({
                     type: "flag",
                     flag: {
@@ -30,8 +32,8 @@ wss.on('connection', async (ws) => {
                             longitude: messageJSON.flag.longitude,
                         }
                     }
-                }));
-                console.log("flag info sent to phones");
+                }), {}, () => {console.log("flag info sent to phones");});
+                // console.log("flag info sent to phones");
                 break;
             case("user"):
                 console.log("WS: USER CASE");
