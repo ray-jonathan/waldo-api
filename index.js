@@ -37,9 +37,9 @@ wss.on('connection', async (ws) => {
         }
         else if (messageJSON.type === "flag"){
             console.log("WS: Flag CASE");
-            // const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
+            const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
             console.log("phoneFill: ");
-            // console.log(phoneFill);
+            console.log(phoneFill);
             ws.send(JSON.stringify({
                 type: "flag",
                 flag: {
