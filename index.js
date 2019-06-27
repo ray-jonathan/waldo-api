@@ -15,8 +15,8 @@ wss.on('connection', async (ws) => {
     console.log(" ");
     console.log("connected");
     ws.on('message', async (message) => {
-        console.log("clients: ");
-        console.log(wss.clients);
+        // console.log("clients: ");
+        // console.log(wss.clients);
         console.log("incoming socket say...");
         const messageJSON = JSON.parse(message);
         console.log(messageJSON);
