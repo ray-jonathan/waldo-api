@@ -17,7 +17,6 @@ wss.on('connection', async (ws) => {
                 console.log("incoming socket say...");
                 const messageJSON = JSON.parse(message);
                 console.log(messageJSON);
-                // BONUS: send all coords to all users except the one who sent this message
                 if(messageJSON.type === "user"){
                     console.log("WS: USER CASE");
                     console.log("userFill: ");
@@ -25,6 +24,7 @@ wss.on('connection', async (ws) => {
                     // we'll want send the userFill object back so that the users have the name and picture of the player
                     // if (client !== ws && client.readyState === WebSocket.OPEN){
                     wss.clients.forEach(async client => {
+                        console.log("Client's ready state: ",client.readyState);
                         // if (client !== ws && client.readyState === WebSocket.OPEN){
                         if (true){
                         ws.send(JSON.stringify({
