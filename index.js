@@ -8,103 +8,106 @@ const WebSocket = require('ws');
 const server = http.createServer(app); 
 const wss = new WebSocket.Server({
     path: '/ws',
-    server // piggyback the websocket server onto our http server
+    clientTracking:true,
+    server,
 });
 wss.on('connection', async (ws) => {
     console.log(" ");
     console.log("connected");
     ws.on('message', async (message) => {
-                console.log("incoming socket say...");
-                const messageJSON = JSON.parse(message);
-                console.log(messageJSON);
-                if(messageJSON.type === "user"){
-                    console.log("WS: USER CASE");
-                    console.log("userFill: ");
-                    const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude)
-                    // we'll want send the userFill object back so that the users have the name and picture of the player
-                    // if (client !== ws && client.readyState === WebSocket.OPEN){
-                    wss.clients.forEach(async client => {
-                        console.log("Client's ready state: ",client.readyState);
-                        // if (client !== ws && client.readyState === WebSocket.OPEN){
-                        if (true){
-                            ws.send(JSON.stringify({
-                                    type: "user",
-                                    user: {
-                                        [userFill.id] : {
-                                            name: userFill.name,
-                                            picture: userFill.picture,                
-                                            latitude: userFill.latitude,
-                                            longitude: userFill.longitude,
-                                        }
-                                    }
-                            }));
-                        }
-                    });
-                }
-                else if (messageJSON.type === "flag"){
-                    console.log("WS: Flag CASE");
-                    const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
-                    console.log("phoneFill: ");
-                    console.log(phoneFill);
-                    wss.clients.forEach(async client => {
-                        console.log("Client's ready state: ",client.readyState);
-                        // if (client !== ws && client.readyState === WebSocket.OPEN){
-                        if (true){
-                            ws.send(JSON.stringify({
-                                type: "flag",
-                                flag: {
-                                    [messageJSON.flag.id] : {
-                                        latitude: messageJSON.flag.latitude,
-                                        longitude: messageJSON.flag.longitude,
-                                    }
+        console.log("clients: ");
+        console.log(wss.clients);
+        console.log("incoming socket say...");
+        const messageJSON = JSON.parse(message);
+        console.log(messageJSON);
+        if(messageJSON.type === "user"){
+            console.log("WS: USER CASE");
+            console.log("userFill: ");
+            const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude)
+            // we'll want send the userFill object back so that the users have the name and picture of the player
+            // if (client !== ws && client.readyState === WebSocket.OPEN){
+            wss.clients.forEach(async client => {
+                console.log("Client's ready state: ",client.readyState);
+                // if (client !== ws && client.readyState === WebSocket.OPEN){
+                if (true){
+                    ws.send(JSON.stringify({
+                            type: "user",
+                            user: {
+                                [userFill.id] : {
+                                    name: userFill.name,
+                                    picture: userFill.picture,                
+                                    latitude: userFill.latitude,
+                                    longitude: userFill.longitude,
                                 }
-                            }));    
+                            }
+                    }));
+                }
+            });
+        }
+        else if (messageJSON.type === "flag"){
+            console.log("WS: Flag CASE");
+            const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
+            console.log("phoneFill: ");
+            console.log(phoneFill);
+            wss.clients.forEach(async client => {
+                console.log("Client's ready state: ",client.readyState);
+                // if (client !== ws && client.readyState === WebSocket.OPEN){
+                if (true){
+                    ws.send(JSON.stringify({
+                        type: "flag",
+                        flag: {
+                            [messageJSON.flag.id] : {
+                                latitude: messageJSON.flag.latitude,
+                                longitude: messageJSON.flag.longitude,
+                            }
                         }
-                    });
-                    console.log("flag info sent to phones");
+                    }));    
                 }
-                else{
-                    console.log(" ");
-                    console.log("It wasn't a flag or a phone??");
-                }
-                // switch(messageJSON.type){
-                //     case("user"):
-                //         console.log("WS: USER CASE");
-                //         const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude)
-                //         // we'll want send the userFill object back so that the users have the name and picture of the player
-                //         ws.send(JSON.stringify({
-                //             type: "user",
-                //             user: {
-                //                 [userFill.id] : {
-                //                     name: userFill.name,
-                //                     picture: userFill.picture,                
-                //                     latitude: userFill.latitude,
-                //                     longitude: userFill.longitude,
-                //                 }
-                //             }
-                //         }));
-                //         break;
-                //     case('flag'):
-                //         console.log("WS: Flag CASE");
-                //         const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
-                //         console.log("phoneFill: ");
-                //         console.log(phoneFill);
-                //         ws.send("************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************")
-                //         ws.send(JSON.stringify({
-                //             type: "flag",
-                //             flag: {
-                //                 [messageJSON.flag.id] : {
-                //                     latitude: messageJSON.flag.latitude,
-                //                     longitude: messageJSON.flag.longitude,
-                //                 }
-                //             }
-                //         }), {}, () => {console.log("flag info sent to phones");});
-                //         // console.log("flag info sent to phones");
-                //         break;
-                //     default: 
-                //         break;
-                // }        
-            
+            });
+            console.log("flag info sent to phones");
+        }
+        else{
+            console.log(" ");
+            console.log("It wasn't a flag or a phone??");
+        }
+        // switch(messageJSON.type){
+        //     case("user"):
+        //         console.log("WS: USER CASE");
+        //         const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude)
+        //         // we'll want send the userFill object back so that the users have the name and picture of the player
+        //         ws.send(JSON.stringify({
+        //             type: "user",
+        //             user: {
+        //                 [userFill.id] : {
+        //                     name: userFill.name,
+        //                     picture: userFill.picture,                
+        //                     latitude: userFill.latitude,
+        //                     longitude: userFill.longitude,
+        //                 }
+        //             }
+        //         }));
+        //         break;
+        //     case('flag'):
+        //         console.log("WS: Flag CASE");
+        //         const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
+        //         console.log("phoneFill: ");
+        //         console.log(phoneFill);
+        //         ws.send("************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************")
+        //         ws.send(JSON.stringify({
+        //             type: "flag",
+        //             flag: {
+        //                 [messageJSON.flag.id] : {
+        //                     latitude: messageJSON.flag.latitude,
+        //                     longitude: messageJSON.flag.longitude,
+        //                 }
+        //             }
+        //         }), {}, () => {console.log("flag info sent to phones");});
+        //         // console.log("flag info sent to phones");
+        //         break;
+        //     default: 
+        //         break;
+        // }        
+    
     });
 });
 
@@ -150,7 +153,7 @@ app.post('/', async (req, res)=> {
                 longitude,
             }
         }));
-        connection.terminate();
+        // connection.terminate();
     };
     res.json({
         message : "Test successful",
