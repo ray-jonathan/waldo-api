@@ -20,6 +20,7 @@ wss.on('connection', async (ws) => {
         // BONUS: send all coords to all users except the one who sent this message
         if(messageJSON.type === "user"){
             console.log("WS: USER CASE");
+            console.log("userFill: ");
             const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude)
             // we'll want send the userFill object back so that the users have the name and picture of the player
             ws.send(JSON.stringify({
@@ -33,7 +34,6 @@ wss.on('connection', async (ws) => {
                     }
                 }
             }));
-            // ws.send("************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************")
         }
         else if (messageJSON.type === "flag"){
             console.log("WS: Flag CASE");
@@ -41,13 +41,14 @@ wss.on('connection', async (ws) => {
             console.log("phoneFill: ");
             console.log(phoneFill);
             ws.send(JSON.stringify({
-                type: "flag",
-                flag: {
-                    [messageJSON.flag.id] : {
-                        latitude: messageJSON.flag.latitude,
-                        longitude: messageJSON.flag.longitude,
-                    }
-                }
+                type: "dummy"
+                // type: "flag",
+                // flag: {
+                //     [messageJSON.flag.id] : {
+                //         latitude: messageJSON.flag.latitude,
+                //         longitude: messageJSON.flag.longitude,
+                //     }
+                // }
             }));
             console.log("flag info sent to phones");
         }
@@ -137,7 +138,7 @@ app.post('/', async (req, res)=> {
                 longitude,
             }
         }));
-        // connection.terminate();
+        connection.terminate();
     };
     res.json({
         message : "Test successful",
