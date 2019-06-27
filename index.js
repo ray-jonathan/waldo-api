@@ -14,7 +14,6 @@ wss.on('connection', async (ws) => {
     console.log(" ");
     console.log("connected");
     ws.on('message', async (message) => {
-        wss.clients.forEach(async client => {
                 console.log("incoming socket say...");
                 const messageJSON = JSON.parse(message);
                 console.log(messageJSON);
@@ -24,36 +23,41 @@ wss.on('connection', async (ws) => {
                     console.log("userFill: ");
                     const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude)
                     // we'll want send the userFill object back so that the users have the name and picture of the player
-                    if (client !== ws && client.readyState === WebSocket.OPEN){
+                    // if (client !== ws && client.readyState === WebSocket.OPEN){
+                    wss.clients.forEach(async client => {
+                        if (client !== ws && client.readyState === WebSocket.OPEN){
                         ws.send(JSON.stringify({
-                            type: "user",
-                            user: {
-                                [userFill.id] : {
-                                    name: userFill.name,
-                                    picture: userFill.picture,                
-                                    latitude: userFill.latitude,
-                                    longitude: userFill.longitude,
+                                type: "user",
+                                user: {
+                                    [userFill.id] : {
+                                        name: userFill.name,
+                                        picture: userFill.picture,                
+                                        latitude: userFill.latitude,
+                                        longitude: userFill.longitude,
+                                    }
                                 }
-                            }
-                        }));
-                    }
+                            }));
+                        }
+                    });
                 }
                 else if (messageJSON.type === "flag"){
                     console.log("WS: Flag CASE");
                     const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
                     console.log("phoneFill: ");
                     console.log(phoneFill);
-                    if (client !== ws && client.readyState === WebSocket.OPEN){
-                        ws.send(JSON.stringify({
-                            type: "flag",
-                            flag: {
-                                [messageJSON.flag.id] : {
-                                    latitude: messageJSON.flag.latitude,
-                                    longitude: messageJSON.flag.longitude,
+                    wss.clients.forEach(async client => {
+                        if (client !== ws){
+                            ws.send(JSON.stringify({
+                                type: "flag",
+                                flag: {
+                                    [messageJSON.flag.id] : {
+                                        latitude: messageJSON.flag.latitude,
+                                        longitude: messageJSON.flag.longitude,
+                                    }
                                 }
-                            }
-                        }));
-                    }
+                            }));    
+                        }
+                    });
                     console.log("flag info sent to phones");
                 }
                 else{
@@ -98,7 +102,6 @@ wss.on('connection', async (ws) => {
                 //         break;
                 // }        
             
-        });
     });
 });
 
