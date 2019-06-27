@@ -25,7 +25,8 @@ wss.on('connection', async (ws) => {
                     // we'll want send the userFill object back so that the users have the name and picture of the player
                     // if (client !== ws && client.readyState === WebSocket.OPEN){
                     wss.clients.forEach(async client => {
-                        if (client !== ws && client.readyState === WebSocket.OPEN){
+                        // if (client !== ws && client.readyState === WebSocket.OPEN){
+                        if (true){
                         ws.send(JSON.stringify({
                                 type: "user",
                                 user: {
@@ -46,7 +47,8 @@ wss.on('connection', async (ws) => {
                     console.log("phoneFill: ");
                     console.log(phoneFill);
                     wss.clients.forEach(async client => {
-                        if (client !== ws){
+                        // if (client !== ws && client.readyState === WebSocket.OPEN){
+                        if (true){
                             ws.send(JSON.stringify({
                                 type: "flag",
                                 flag: {
