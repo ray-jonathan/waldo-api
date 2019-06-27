@@ -27,16 +27,16 @@ wss.on('connection', async (ws) => {
                         console.log("Client's ready state: ",client.readyState);
                         // if (client !== ws && client.readyState === WebSocket.OPEN){
                         if (true){
-                        ws.send(JSON.stringify({
-                                type: "user",
-                                user: {
-                                    [userFill.id] : {
-                                        name: userFill.name,
-                                        picture: userFill.picture,                
-                                        latitude: userFill.latitude,
-                                        longitude: userFill.longitude,
+                            ws.send(JSON.stringify({
+                                    type: "user",
+                                    user: {
+                                        [userFill.id] : {
+                                            name: userFill.name,
+                                            picture: userFill.picture,                
+                                            latitude: userFill.latitude,
+                                            longitude: userFill.longitude,
+                                        }
                                     }
-                                }
                             }));
                         }
                     });
@@ -47,6 +47,7 @@ wss.on('connection', async (ws) => {
                     console.log("phoneFill: ");
                     console.log(phoneFill);
                     wss.clients.forEach(async client => {
+                        console.log("Client's ready state: ",client.readyState);
                         // if (client !== ws && client.readyState === WebSocket.OPEN){
                         if (true){
                             ws.send(JSON.stringify({
