@@ -26,10 +26,11 @@ wss.on('connection', (ws) => {
             const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude)
             // we'll want send the userFill object back so that the users have the name and picture of the player
             // if (client !== ws && client.readyState === WebSocket.OPEN){
+            let numOfClients = 0;
             wss.clients.forEach(async client => {
                 console.log("Client's ready state: ",client.readyState);
-                // if (client !== ws && client.readyState === WebSocket.OPEN){
-                if (true){
+                if (client !== ws && client.readyState === WebSocket.OPEN){
+                    numOfClients ++;
                     client.send(JSON.stringify({
                             type: "user",
                             user: {
@@ -43,16 +44,17 @@ wss.on('connection', (ws) => {
                     }));
                 }
             });
+            console.log(`Updated user information sent to ${numOfClients} phones.`);
         }
         else if (messageJSON.type === "flag"){
             console.log("WS: Flag CASE");
             const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
             console.log("phoneFill: ");
             console.log(phoneFill);
+            let numOfClients = 0;
             wss.clients.forEach(async client => {
-                console.log("Client's ready state: ",client.readyState);
-                // if (client !== ws && client.readyState === WebSocket.OPEN){
-                if (true){
+                if (client !== ws && client.readyState === WebSocket.OPEN){
+                    numOfClients ++;
                     client.send(JSON.stringify({
                         type: "flag",
                         flag: {
@@ -64,7 +66,7 @@ wss.on('connection', (ws) => {
                     }));    
                 }
             });
-            console.log("flag info sent to phones");
+            console.log(`Updated flag information sent to ${numOfClients} phones.`);
         }
         else{
             console.log(" ");
