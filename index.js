@@ -153,7 +153,7 @@ app.post('/', async (req, res)=> {
                 longitude,
             }
         }));
-        // connection.terminate();
+        connection.terminate();
     };
     res.json({
         message : "Test successful",
