@@ -11,7 +11,7 @@ const wss = new WebSocket.Server({
     clientTracking:true,
     server,
 });
-wss.on('connection', async (ws) => {
+wss.on('connection', (ws) => {
     console.log(" ");
     console.log("connected");
     ws.on('message', async (message) => {
@@ -30,7 +30,7 @@ wss.on('connection', async (ws) => {
                 console.log("Client's ready state: ",client.readyState);
                 // if (client !== ws && client.readyState === WebSocket.OPEN){
                 if (true){
-                    ws.send(JSON.stringify({
+                    client.send(JSON.stringify({
                             type: "user",
                             user: {
                                 [userFill.id] : {
@@ -53,7 +53,7 @@ wss.on('connection', async (ws) => {
                 console.log("Client's ready state: ",client.readyState);
                 // if (client !== ws && client.readyState === WebSocket.OPEN){
                 if (true){
-                    ws.send(JSON.stringify({
+                    client.send(JSON.stringify({
                         type: "flag",
                         flag: {
                             [messageJSON.flag.id] : {
