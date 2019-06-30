@@ -21,7 +21,7 @@ wss.on('connection', (ws) => {
         if(messageJSON.type === "user"){
             console.log("WS: USER CASE");
             console.log("userFill: ");
-            const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude)
+            const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude);
             // we'll want send the userFill object back so that the users have the name and picture of the player
             // if (client !== ws && client.readyState === WebSocket.OPEN){
             let numOfClients = 0;
@@ -47,7 +47,7 @@ wss.on('connection', (ws) => {
         else if (messageJSON.type === "flag"){
             console.log("WS: Flag CASE");
             if (messageJSON.decoy === false){
-                const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude)
+                const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude);
                 console.log("phoneFill: ");
                 console.log(phoneFill);
                 let numOfClients = 0;
@@ -61,7 +61,7 @@ wss.on('connection', (ws) => {
                                     latitude: messageJSON.flag.latitude,
                                     longitude: messageJSON.flag.longitude,
                                 }
-                            }
+                            },
                         }));    
                     }
                 });
@@ -80,7 +80,8 @@ wss.on('connection', (ws) => {
                                     latitude: messageJSON.flag.latitude,
                                     longitude: messageJSON.flag.longitude,
                                 }
-                            }
+                            },
+                            decoy: true,
                         }));    
                     }
                 });

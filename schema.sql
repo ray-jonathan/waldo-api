@@ -5,6 +5,7 @@ create table users (
     picture varchar (500),
     latitude float,
     longitude float,
+    team smallint,
     last_update bigint default extract(epoch from now()) * 1000
 );
 

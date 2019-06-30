@@ -24,7 +24,7 @@ class Phone {
     }
 
     static setUserById(id, latitude, longitude){
-        return db.one(`UPDATE users set latitude=$2, longitude=$3 where id=$1 returning *`, [id, latitude, longitude])
+        return db.one(`UPDATE users set latitude=$2, longitude=$3 where id=$1 returning *`, [id, latitude, longitude]);
     }
 
     static add1(userID, spotifyResult, artist_track_url){
