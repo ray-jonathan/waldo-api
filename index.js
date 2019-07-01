@@ -138,12 +138,11 @@ app.use(express.urlencoded({extended: true}));
 
 app.post('/generate-user', async (req, res)=> {
     console.log('/generate-user path');
-    const body = JSON.parse(req.body);
-    console.log(body);
-    const {id, name, picture} = body;
-    console.log(id);
-    console.log(name);
-    console.log(picture);
+    console.log(req.body);
+    const {id, name, picture} = req.body;
+    console.log("id: ", id);
+    console.log("name: ", name);
+    console.log("picture: ", picture);
 });
 
 app.get('/', async (req, res)=> {
