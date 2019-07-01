@@ -32,7 +32,7 @@ class Phone {
         const team = await this.getTeamsAssignment();
         console.log(`${name} is on Team ${team}.`);
         return db.one(`insert into users (id, name, picture, team) values ($1, $2, $3, $4) returning *`, [id, name, picture, team])
-        .then(result => new Phone(result.id, result.name, result.picture, result.latitude, result.longitude, result.lastUpdate))
+        .then(result => new Phone(result.id, result.name, result.picture, result.latitude, result.longitude, result.team, result.lastUpdate))
         .then(user => console.log("user: ", user) && user);
     }
 
