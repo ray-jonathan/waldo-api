@@ -94,6 +94,7 @@ wss.on('connection', (ws) => {
         //     console.log(" ");
         //     console.log("It wasn't a flag or a phone??");
         // }
+        let numOfClients = 0;
         switch(messageJSON.type){
             case("user"):
                 console.log("WS: USER CASE");
@@ -101,7 +102,6 @@ wss.on('connection', (ws) => {
                 const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude);
                 // we'll want send the userFill object back so that the users have the name and picture of the player
                 // if (client !== ws && client.readyState === WebSocket.OPEN){
-                let numOfClients = 0;
                 wss.clients.forEach(async client => {
                     console.log("Client's ready state: ",client.readyState);
                     if (client !== ws && client.readyState === WebSocket.OPEN){
@@ -129,7 +129,6 @@ wss.on('connection', (ws) => {
                         const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude);
                         console.log("phoneFill: ");
                         console.log(phoneFill);
-                        let numOfClients = 0;
                         wss.clients.forEach(async client => {
                             if (client !== ws && client.readyState === WebSocket.OPEN){
                                 numOfClients ++;
@@ -148,7 +147,6 @@ wss.on('connection', (ws) => {
                         break;
                     case true:
                         console.log("decoy enabled, sending dummy coordinates");
-                        let numOfClients = 0;
                         wss.clients.forEach(async client => {
                             if (client !== ws && client.readyState === WebSocket.OPEN){
                                 numOfClients ++;
