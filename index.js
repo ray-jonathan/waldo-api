@@ -136,11 +136,13 @@ wss.on('connection', (ws) => {
 app.use(express.json()); // Required for passing JSON to `req.body`
 app.use(express.urlencoded({extended: true}));
 
-app.get('/generate-user/*', async (req, res)=> {
+app.post('/generate-user', async (req, res)=> {
     console.log('/generate-user path');
-    console.log(req.params);
-    const {id, name, picture} = req.params;
-    
+    console.log(req.body);
+    const {id, name, picture} = req.body;
+    console.log(id);
+    console.log(name);
+    console.log(picture);
 });
 
 app.get('/', async (req, res)=> {
