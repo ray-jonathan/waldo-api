@@ -141,7 +141,9 @@ app.post('/generate-user', async (req, res)=> {
     console.log(req.body);
     const {id, name, picture} = req.body;
     const user = await Phone.newUser(id, name, picture);
-    console.log(user);
+    res.json({
+        user
+    });
 });
 
 app.get('/', async (req, res)=> {
