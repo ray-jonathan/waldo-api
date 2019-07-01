@@ -149,9 +149,7 @@ app.post('/generate-user', async (req, res)=> {
 
 app.get('/first/:flagId', async (req, res) => {
     console.log("'GET' request");
-    console.log(req.params);
-    console.log(req.path);
-    const flag = await Beacon.getBeaconById(1);
+    const flag = await Beacon.getBeaconById(req.params.flagId);
     const usersArray = await Phone.getAllUsers();
     const users = {};
     usersArray.forEach(user => {
