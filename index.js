@@ -122,10 +122,10 @@ wss.on('connection', (ws) => {
                 console.log(`Updated user information sent to ${numOfClients} phones.`);
                 break;
             case('flag'):
-                console.log("messageJSON.decoy: ", messageJSON.decoy);
-                console.log("messageJSON.decoy type: ",typeof messageJSON.decoy);
-                messageJSON.decoy === true ? console.log("WS: DECOY Flag CASE") : console.log("WS: REAL Flag CASE");
-                if (messageJSON.decoy === 'false'){
+                console.log("messageJSON.flag.decoy: ", messageJSON.flag.decoy);
+                console.log("messageJSON.flag.decoy type: ",typeof messageJSON.flag.decoy);
+                messageJSON.flag.decoy === true ? console.log("WS: DECOY Flag CASE") : console.log("WS: REAL Flag CASE");
+                if (messageJSON.flag.decoy === 'false'){
                     const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude);
                     console.log("phoneFill: ");
                     console.log(phoneFill);
@@ -144,7 +144,7 @@ wss.on('connection', (ws) => {
                         }
                     });
                 }
-                else if (messageJSON.decoy === true){
+                else if (messageJSON.flag.decoy === true){
                     console.log(`Updated flag information sent to ${numOfClients} phones.`);
                     console.log("decoy enabled, sending dummy coordinates");
                     wss.clients.forEach(async client => {
