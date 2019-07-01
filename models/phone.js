@@ -27,8 +27,9 @@ class Phone {
         return db.one(`UPDATE users set latitude=$2, longitude=$3 where id=$1 returning *`, [id, latitude, longitude]);
     }
 
-    static newUser(id, name, picture){
-        const {team} = this.getTeamsAssignment();
+    static async newUser(id, name, picture){
+        const team = await this.getTeamsAssignment();
+        console.log(`${name} is on Team ${team}.`);
         return db.one(`insert in users (id, name, picture, team) values ($1, $2, $3, $4) returning *`, [id, name, picture, team])
     }
 
