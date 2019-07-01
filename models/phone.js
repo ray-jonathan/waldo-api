@@ -36,14 +36,13 @@ class Phone {
         console.log('getTeamsCount');
         const data = await db.any(`select * from users`);
         console.log(data);
-        const {team} = data;
         let team1 = 0;
         let team2 = 0;
-        team.forEach(team => {
-            if (team == 1){
+        data.forEach(user => {
+            if (user.team == 1){
                 team1++;
             }
-            if (team == 2){
+            if (user.team == 2){
                 team2++;
             }
         });
