@@ -147,7 +147,7 @@ app.post('/generate-user', async (req, res)=> {
     });
 });
 
-app.get('/first/:team', async (req, res)=> {
+app.get('/first', async (req, res)=> {
     console.log("'GET' request");
     console.log(req.params);
     const flag = await Beacon.getBeaconById(1);
