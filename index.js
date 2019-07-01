@@ -122,29 +122,10 @@ wss.on('connection', (ws) => {
                 console.log(`Updated user information sent to ${numOfClients} phones.`);
                 break;
             case('flag'):
-                console.log("messageJSON.flag.decoy: ", messageJSON.flag.decoy);
-                console.log("messageJSON.flag.decoy type: ",typeof messageJSON.flag.decoy);
+                console.log("messageJSON.flag.decoy: ", messageJSON.decoy);
+                console.log("messageJSON.flag.decoy type: ",typeof messageJSON.decoy);
                 messageJSON.flag.decoy === 'true' ? console.log("WS: DECOY Flag CASE") : console.log("WS: REAL Flag CASE");
-                if (messageJSON.flag.decoy === 'false'){
-                    const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude);
-                    console.log("phoneFill: ");
-                    console.log(phoneFill);
-                    wss.clients.forEach(async client => {
-                        if (client !== ws && client.readyState === WebSocket.OPEN){
-                            numOfClients ++;
-                            client.send(JSON.stringify({
-                                type: "flag",
-                                flag: {
-                                    [messageJSON.flag.id] : {
-                                        latitude: messageJSON.flag.latitude,
-                                        longitude: messageJSON.flag.longitude,
-                                    }
-                                },
-                            }));    
-                        }
-                    });
-                }
-                else if (messageJSON.flag.decoy === 'true'){
+                if (messageJSON.decoy){
                     console.log(`Updated flag information sent to ${numOfClients} phones.`);
                     console.log("decoy enabled, sending dummy coordinates");
                     wss.clients.forEach(async client => {
@@ -163,6 +144,25 @@ wss.on('connection', (ws) => {
                         }
                     });
                     console.log(`Updated flag information sent to ${numOfClients} phones.`);
+                }
+                else if (!messageJSON.decoy){
+                    const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude);
+                    console.log("phoneFill: ");
+                    console.log(phoneFill);
+                    wss.clients.forEach(async client => {
+                        if (client !== ws && client.readyState === WebSocket.OPEN){
+                            numOfClients ++;
+                            client.send(JSON.stringify({
+                                type: "flag",
+                                flag: {
+                                    [messageJSON.flag.id] : {
+                                        latitude: messageJSON.flag.latitude,
+                                        longitude: messageJSON.flag.longitude,
+                                    }
+                                },
+                            }));    
+                        }
+                    });
                 }
                 else{
                     console.log(" ");
@@ -217,17 +217,17 @@ app.get('/first/:flagId', async (req, res) => {
 
 app.post('/', async (req, res)=> {
     console.log(`'POST' from flag id: ${req.body.id}`);
-    const {latitude, longitude, id, decoy } = req.body;
+    const {latitude, longitude, id, decoy } = JSON.parse(req.body);
     const url = 'wss://waldo.jonathan-ray.com/ws';
     const connection = new WebSocket(url);
     connection.onopen = () => {
         connection.send(JSON.stringify({
             type: "flag",
+            decoy,
             flag: {
                 id,
                 latitude,
                 longitude,
-                decoy,
             }
         }));
         connection.terminate();
