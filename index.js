@@ -136,7 +136,7 @@ wss.on('connection', (ws) => {
 app.use(express.json()); // Required for passing JSON to `req.body`
 app.use(express.urlencoded({extended: true}));
 
-app.get('/auth/callback', (req, res) => {
+app.get('*', (req, res) => {
     console.log(" ");
     console.log(" ");
     console.log(" ");
