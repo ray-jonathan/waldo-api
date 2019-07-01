@@ -1,6 +1,6 @@
 -- create tables for pushing up sensor gyro and compass data
 create table users (
-    id serial primary key,
+    id varchar (50),
     name varchar (200),
     picture varchar (500),
     latitude float,
