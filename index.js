@@ -140,9 +140,8 @@ app.post('/generate-user', async (req, res)=> {
     console.log('/generate-user path');
     console.log(req.body);
     const {id, name, picture} = req.body;
-    console.log("id: ", id);
-    console.log("name: ", name);
-    console.log("picture: ", picture);
+    const user = await Phone.newUser(id, name, picture);
+    console.log(user);
 });
 
 app.get('/', async (req, res)=> {
