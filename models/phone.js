@@ -1,12 +1,13 @@
 const db = require('./conn');
 
 class Phone {
-    constructor(id, name, picture, latitude, longitude, last_update){
+    constructor(id, name, picture, latitude, longitude, team, last_update){
         this.id = id;
         this.name = name;
         this.picture = picture;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.team = team;
         this.lastUpdate = last_update;
     }
     static getAllUsers(){
