@@ -12,7 +12,7 @@ create table users (
 -- create tables for logging gps beacon data
 create table flags (
     id serial primary key,
-    color varchar(25),
+    team smallint,
     latitude float,
     longitude float,
     last_update bigint default extract(epoch from now()) * 1000

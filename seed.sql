@@ -1,6 +1,7 @@
-INSERT into flags(color, latitude, longitude)
+INSERT into flags(team, latitude, longitude)
 VALUES 
-('red', 33.78927198752338,-84.3732207378365);
+(1, 33.78927198752338,-84.3732207378365),
+(2, 33.78927198752338,-84.3732207378365);
 
 -- INSERT into users (name, latitude, longitude, team)
 -- VALUES
