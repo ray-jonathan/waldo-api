@@ -136,19 +136,6 @@ wss.on('connection', (ws) => {
 app.use(express.json()); // Required for passing JSON to `req.body`
 app.use(express.urlencoded({extended: true}));
 
-app.get('*', (req, res) => {
-    console.log(" ");
-    console.log(" ");
-    console.log(" ");
-    console.log(" ");
-    console.log(" ");
-    console.log(" ");
-    console.log(req.url);
-    console.log(" ");
-    console.log(" ");
-    console.log(" ");
-})
-
 app.get('/', async (req, res)=> {
     console.log("'GET' request");
     const flag = await Beacon.getBeaconById(1);
