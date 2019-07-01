@@ -27,6 +27,35 @@ class Phone {
         return db.one(`UPDATE users set latitude=$2, longitude=$3 where id=$1 returning *`, [id, latitude, longitude]);
     }
 
+    static newUser(id, name, picture){
+        const {team} = getTeamsAssignment();
+        return db.one(`insert in users (id, name, picture, team) values ($1, $2, $3, $4) returning *`, [id, name, picture, team])
+    }
+
+    static async getTeamsAssignment(){
+        console.log('getTeamsCount');
+        const {data} = db.any(`select team from users`);
+        console.log(data);
+        const {team} = data;
+        let team1 = 0;
+        let team2 = 0;
+        team.forEach(team => {
+            if (team == 1){
+                team1++;
+            }
+            if (team == 2){
+                team2++;
+            }
+        });
+        const teamCount= {team1, team2,};
+        console.log('teamCount: ', teamCount);
+        let getTeamsAssignment = 2;
+        if(team1 <= team2){
+            getTeamsAssignment = 1;
+        }
+        return getTeamsAssignment;
+    }
+
     static add1(userID, spotifyResult, artist_track_url){
         if(artist_track_url === null){
             artist_track_url = 'https://p.scdn.co/mp3-preview/22bf10aff02db272f0a053dff5c0063d729df988?cid=774b29d4f13844c495f206cafdad9c86';
