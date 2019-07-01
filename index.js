@@ -217,13 +217,15 @@ app.get('/first/:flagId', async (req, res) => {
 
 app.post('/', async (req, res)=> {
     console.log(`'POST' from flag id: ${req.body.id}`);
-    const {latitude, longitude, id, decoy } = JSON.parse(req.body);
+    const {latitude, longitude, id, decoy } = req.body;
+    const decoy1 = JSON.parse(decoy);
+    console.log("decoy1: ",decoy1);
     const url = 'wss://waldo.jonathan-ray.com/ws';
     const connection = new WebSocket(url);
     connection.onopen = () => {
         connection.send(JSON.stringify({
             type: "flag",
-            decoy,
+            decoy: decoy1,
             flag: {
                 id,
                 latitude,
