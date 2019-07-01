@@ -123,56 +123,52 @@ wss.on('connection', (ws) => {
                 break;
             case('flag'):
                 messageJSON.decoy ? console.log("WS: DECOY Flag CASE") : console.log("WS: REAL Flag CASE");
-                switch(messageJSON.decoy){
-                    case false: 
-                    // if (messageJSON.decoy === false){
-                        const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude);
-                        console.log("phoneFill: ");
-                        console.log(phoneFill);
-                        wss.clients.forEach(async client => {
-                            if (client !== ws && client.readyState === WebSocket.OPEN){
-                                numOfClients ++;
-                                client.send(JSON.stringify({
-                                    type: "flag",
-                                    flag: {
-                                        [messageJSON.flag.id] : {
-                                            latitude: messageJSON.flag.latitude,
-                                            longitude: messageJSON.flag.longitude,
-                                        }
-                                    },
-                                }));    
-                            }
-                        });
-                        console.log(`Updated flag information sent to ${numOfClients} phones.`);
-                        break;
-                    case true:
-                        console.log("decoy enabled, sending dummy coordinates");
-                        wss.clients.forEach(async client => {
-                            if (client !== ws && client.readyState === WebSocket.OPEN){
-                                numOfClients ++;
-                                client.send(JSON.stringify({
-                                    type: "flag",
-                                    flag: {
-                                        [messageJSON.flag.id] : {
-                                            latitude: messageJSON.flag.latitude,
-                                            longitude: messageJSON.flag.longitude,
-                                        }
-                                    },
-                                    decoy: true,
-                                }));    
-                            }
-                        });
-                        console.log(`Updated flag information sent to ${numOfClients} phones.`);
-                        break;
+                if (messageJSON.decoy === false){
+                    const phoneFill = await Beacon.setCoordinatesById(messageJSON.flag.id, messageJSON.flag.latitude, messageJSON.flag.longitude);
+                    console.log("phoneFill: ");
+                    console.log(phoneFill);
+                    wss.clients.forEach(async client => {
+                        if (client !== ws && client.readyState === WebSocket.OPEN){
+                            numOfClients ++;
+                            client.send(JSON.stringify({
+                                type: "flag",
+                                flag: {
+                                    [messageJSON.flag.id] : {
+                                        latitude: messageJSON.flag.latitude,
+                                        longitude: messageJSON.flag.longitude,
+                                    }
+                                },
+                            }));    
+                        }
+                    });
                 }
-                break;
-            default: 
-                console.log(" ");
-                console.log(" ");
-                console.log("It wasn't a flag or a phone??");
-                console.log(" ");
-                console.log(" ");
-                break;
+                else if (messageJSON.decoy === true){
+                    console.log(`Updated flag information sent to ${numOfClients} phones.`);
+                    console.log("decoy enabled, sending dummy coordinates");
+                    wss.clients.forEach(async client => {
+                        if (client !== ws && client.readyState === WebSocket.OPEN){
+                            numOfClients ++;
+                            client.send(JSON.stringify({
+                                type: "flag",
+                                flag: {
+                                    [messageJSON.flag.id] : {
+                                        latitude: messageJSON.flag.latitude,
+                                        longitude: messageJSON.flag.longitude,
+                                    }
+                                },
+                                decoy: true,
+                            }));    
+                        }
+                    });
+                    console.log(`Updated flag information sent to ${numOfClients} phones.`);
+                }
+                else{
+                    console.log(" ");
+                    console.log(" ");
+                    console.log("It wasn't a flag or a phone??");
+                    console.log(" ");
+                    console.log(" ");
+                }
         }        
     
     });
