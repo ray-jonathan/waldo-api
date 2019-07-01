@@ -136,7 +136,7 @@ wss.on('connection', (ws) => {
 app.use(express.json()); // Required for passing JSON to `req.body`
 app.use(express.urlencoded({extended: true}));
 
-app.get('/generate-user/:id/:name/:picture', async (req, res)=> {
+app.get('/generate-user/*', async (req, res)=> {
     console.log('/generate-user path');
     console.log(req.params);
     const {id, name, picture} = req.params;
