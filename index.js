@@ -12,7 +12,7 @@ const wss = new WebSocket.Server({
     server,
 });
 
-let decoyBool = false;
+var decoyBool = false;
 wss.on('connection', (ws) => {
     console.log(" ");
     console.log("connected");
@@ -124,10 +124,14 @@ wss.on('connection', (ws) => {
             case('flag'):
                 console.log("messageJSON.flag.decoy: ", messageJSON.decoy);
                 console.log("messageJSON.flag.decoy type: ",typeof messageJSON.decoy);
-                messageJSON.flag.decoy === 'true' ? console.log("WS: DECOY Flag CASE") : console.log("WS: REAL Flag CASE");
+                messageJSON.decoy? console.log("WS: DECOY Flag CASE") : console.log("WS: REAL Flag CASE");
                 if (messageJSON.decoy){
-                    console.log(`Updated flag information sent to ${numOfClients} phones.`);
-                    console.log("decoy enabled, sending dummy coordinates");
+                    console.log("decoyBool is ", decoyBool);
+                    if (!decoyBool){
+                        decoyBool = true;
+                        console.log("decoyBool is ", decoyBool);
+                        setTimeout(()=> {decoyBool = false;}, 6000);
+                    }
                     wss.clients.forEach(async client => {
                         if (client !== ws && client.readyState === WebSocket.OPEN){
                             numOfClients ++;
@@ -163,6 +167,7 @@ wss.on('connection', (ws) => {
                             }));    
                         }
                     });
+                    console.log(`Updated flag information sent to ${numOfClients} phones.`);
                 }
                 else{
                     console.log(" ");
