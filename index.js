@@ -164,7 +164,7 @@ app.get('/', async (req, res)=> {
 app.post('/', async (req, res)=> {
     console.log(`'POST' from flag id: ${req.body.id}`);
     const {latitude, longitude, id, } = req.body;
-    const url = 'ws://waldo.jonathan-ray.com/ws';
+    const url = 'wss://waldo.jonathan-ray.com/ws';
     const connection = new WebSocket(url);
     connection.onopen = () => {
         connection.send(JSON.stringify({
