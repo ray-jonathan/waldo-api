@@ -147,7 +147,7 @@ app.post('/generate-user', async (req, res)=> {
     });
 });
 
-app.get('*', async (req, res) => {
+app.get('/first/:flagId', async (req, res) => {
     console.log("'GET' request");
     console.log(req.params);
     console.log(req.path);
