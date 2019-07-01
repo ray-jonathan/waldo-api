@@ -34,7 +34,7 @@ class Phone {
 
     static async getTeamsAssignment(){
         console.log('getTeamsCount');
-        const data = await db.any(`select * from users returning team`);
+        const data = await db.any(`select * from users`);
         console.log(data);
         const {team} = data;
         let team1 = 0;
