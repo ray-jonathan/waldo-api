@@ -28,7 +28,7 @@ class Phone {
     }
 
     static newUser(id, name, picture){
-        const {team} = getTeamsAssignment();
+        const {team} = this.getTeamsAssignment();
         return db.one(`insert in users (id, name, picture, team) values ($1, $2, $3, $4) returning *`, [id, name, picture, team])
     }
 
