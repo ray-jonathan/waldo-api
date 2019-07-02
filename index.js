@@ -97,7 +97,7 @@ wss.on('connection', (ws) => {
         let numOfClients = 0;
         switch(messageJSON.type){
             case("user"):
-                if(message.action === "remove"){
+                if(messageJSON.action === "remove"){
                     const deleteStatus = await Phone.deleteUser(messageJSON.user.id);
                     console.log(`${messageJSON.user.id} is `);
                     console.log(deleteStatus);
