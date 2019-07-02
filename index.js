@@ -111,6 +111,9 @@ wss.on('connection', (ws) => {
                                     type: "user",
                                     user: {
                                         [messageJSON.user.id] : {
+                                            name: null,
+                                            team: 0,
+                                            picture: null,                
                                             latitude: 83.23890561972286,
                                             longitude: -22.146080134473323,
                                         }
@@ -123,7 +126,7 @@ wss.on('connection', (ws) => {
                 }
                 console.log("WS: USER CASE");
                 console.log("userFill: ");
-                const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude);
+                const userFill = await Phone.setUserById(parseInt(messageJSON.user.id), messageJSON.user.latitude, messageJSON.user.longitude);
                 // we'll want send the userFill object back so that the users have the name and picture of the player
                 // if (client !== ws && client.readyState === WebSocket.OPEN){
                 wss.clients.forEach(async client => {
@@ -135,6 +138,7 @@ wss.on('connection', (ws) => {
                                 user: {
                                     [userFill.id] : {
                                         name: userFill.name,
+                                        team: userFill.team,
                                         picture: userFill.picture,                
                                         latitude: userFill.latitude,
                                         longitude: userFill.longitude,
