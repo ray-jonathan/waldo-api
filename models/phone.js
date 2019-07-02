@@ -62,7 +62,7 @@ class Phone {
     }
 
     static async deleteUser(id){
-        const status = await db.one(`delete from users where id=$1`, [id]);
+        const status = await db.one(`delete from users where id=$1 returning true`, [id]);
         return status;
     }
 
