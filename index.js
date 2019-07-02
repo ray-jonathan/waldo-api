@@ -97,6 +97,30 @@ wss.on('connection', (ws) => {
         let numOfClients = 0;
         switch(messageJSON.type){
             case("user"):
+                if(message.action === "remove"){
+                    const deleteStatus = await Phone.deleteUser(messageJSON.user.id);
+                    console.log(`${messageJSON.user.id} is `);
+                    console.log(deleteStatus);
+                    console.log(" ");
+                    wss.clients.forEach(async client => {
+                        console.log("Client's ready state: ",client.readyState);
+                        if (client !== ws && client.readyState === WebSocket.OPEN){
+                            numOfClients ++;
+                            // make the user appear to be in the arctic circle
+                            client.send(JSON.stringify({
+                                    type: "user",
+                                    user: {
+                                        [messageJSON.user.id] : {
+                                            latitude: 83.23890561972286,
+                                            longitude: -22.146080134473323,
+                                        }
+                                    }
+                            }));
+                        }
+                    });
+                    console.log(`Updated user information sent to ${numOfClients} phones.`);
+                    break;
+                }
                 console.log("WS: USER CASE");
                 console.log("userFill: ");
                 const userFill = await Phone.setUserById(messageJSON.user.id, messageJSON.user.latitude, messageJSON.user.longitude);

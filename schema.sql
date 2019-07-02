@@ -17,3 +17,10 @@ create table flags (
     longitude float,
     last_update bigint default extract(epoch from now()) * 1000
 );
+
+-- create table game (
+--     id serial primary key,
+--     team_1 text [],
+--     team_2 text [],
+--     isActive boolean
+-- );

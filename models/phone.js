@@ -61,6 +61,11 @@ class Phone {
         return getTeamsAssignment;
     }
 
+    static async deleteUser(id){
+        const status = await db.one(`delete from user where id=$1`, [id]);
+        return status;
+    }
+
 }
 
 module.exports = Phone;
